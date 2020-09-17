@@ -39,7 +39,7 @@ public class GuessResource {
     @GET
     @Path("/gp/{gp}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response get(@PathParam String gp) {
+    public Response getStatistics(@PathParam String gp) {
         log.info("Starting datagrid access...");
         Statistics statistics = stats.get(gp);
         log.info("Statistics returned {}", statistics);
@@ -49,4 +49,5 @@ public class GuessResource {
         else
             return Response.status(Status.NOT_FOUND).build();
     }
+
 }

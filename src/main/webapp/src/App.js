@@ -14,6 +14,8 @@ import './App.css';
 import { IconButton, Paper } from '@material-ui/core';
 import {Pie} from 'react-chartjs-2';
 
+const backendUrl = window.location.protocol + '//' + window.location.hostname;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
@@ -68,7 +70,7 @@ class App extends Component {
     newState.error = null;
     this.setState(newState);
 
-    fetch('http://guess-statistics-team5.apps.cluster-54d0.54d0.example.opentlc.com/api/gp')
+    fetch(backendUrl + '/api/gp')
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -85,7 +87,7 @@ class App extends Component {
       this.setState(newState);
 
       if (!!this.state.gp && this.state.gp !== '') {
-        fetch('http://guess-statistics-team5.apps.cluster-54d0.54d0.example.opentlc.com/api/gp/'+this.state.gp)
+        fetch(backendUrl + '/api/gp/'+this.state.gp)
         .then(response => {
           if (response.ok) {
             return response.json();
