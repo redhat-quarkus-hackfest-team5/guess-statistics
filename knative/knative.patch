@@ -1,0 +1,13 @@
+--- target/kubernetes/knative.yml	2020-09-18 19:14:49.771724181 -0300
++++ knative/knative.yml	2020-09-18 19:14:24.771854042 -0300
+@@ -67,3 +67,9 @@
+           name: infinispan-truststore-volume
+           readOnly: false
+           subPath: ""
++      volumes:
++      - name: infinispan-truststore-volume
++        secret:
++          defaultMode: 384
++          optional: false
++          secretName: infinispan-truststore
+\ No newline at end of file
