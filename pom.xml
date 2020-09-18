@@ -68,6 +68,10 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-jsonb</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-funqy-knative-events</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

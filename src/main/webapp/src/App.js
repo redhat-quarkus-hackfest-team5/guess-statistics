@@ -14,7 +14,8 @@ import './App.css';
 import { IconButton, Paper } from '@material-ui/core';
 import {Pie} from 'react-chartjs-2';
 
-const backendUrl = window.location.protocol + '//' + window.location.hostname;
+//const backendUrl = window.location.protocol + '//' + window.location.hostname;
+const backendUrl = 'http://guess-statistics-team5.apps.cluster-54d0.54d0.example.opentlc.com';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,7 +71,7 @@ class App extends Component {
     newState.error = null;
     this.setState(newState);
 
-    fetch(backendUrl + '/api/gp')
+    fetch(encodeURI(backendUrl + '/api/gp'))
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -86,8 +87,15 @@ class App extends Component {
       newState.updateDate = new Date().toISOString();
       this.setState(newState);
 
+      console.log('Current selected GP is: ' + this.state.gp);
+
       if (!!this.state.gp && this.state.gp !== '') {
-        fetch(backendUrl + '/api/gp/'+this.state.gp)
+
+        const url = encodeURI(backendUrl + '/api/gp/' + this.state.gp)
+
+        console.log('Fetching statistics for '+ url);
+
+        fetch(url)
         .then(response => {
           if (response.ok) {
             return response.json();
@@ -141,7 +149,7 @@ class App extends Component {
       return <p>{error.message}</p>;
     }
 
-    let Graph;
+    let Graph = null;
 
     if (!!current) {
       const data = {
@@ -155,7 +163,7 @@ class App extends Component {
 
       Graph = (<Grid item xs={12}>
         <Paper className={classes.paper}>
-          <Container item xs>
+          <Container item xs={12}>
             <div style={{padding: 10}}>
               <Pie data={data} />
             </div>
@@ -196,7 +204,7 @@ class App extends Component {
                         className={classes.selectEmpty}>
                           <MenuItem value={''}>-- None Selected --</MenuItem>
                           {gpList.map((item,index) =>
-                            <MenuItem value={item}>{item}</MenuItem>
+                            <MenuItem key={item} value={item}>{item}</MenuItem>
                           )}
                       </Select>
                       <Typography gutterBottom variant="overline" style={{width: 530, textAlign: 'right'}}>

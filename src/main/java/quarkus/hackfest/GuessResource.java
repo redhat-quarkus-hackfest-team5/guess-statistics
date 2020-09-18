@@ -1,6 +1,7 @@
 package quarkus.hackfest;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -31,7 +32,8 @@ public class GuessResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
         log.info("Starting datagrid access...");
-        Set<String> keys = stats.keySet();
+        Set<String> keys = stats.entrySet()
+            .stream().map(e -> e.getKey()).collect(Collectors.toSet());
         log.info("Keys returned {}...", keys);
         return Response.ok(keys).build();
     }
