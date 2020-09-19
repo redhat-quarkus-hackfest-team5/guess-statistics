@@ -51,7 +51,7 @@ class App extends Component {
       loading: false,
       error: false,
       gpList: [],
-      gp: '',
+      gp: '-',
       current: null,
       updateDate: ''
     };
@@ -75,7 +75,7 @@ class App extends Component {
       if (response.ok) {
         return response.json();
       } else {
-        throw new Error('Something went wrong ...');
+        throw new Error('[1] Something went wrong ...');
       }
     })
     .then(data =>{
@@ -88,7 +88,7 @@ class App extends Component {
 
       console.log('Current selected GP is: ' + this.state.gp);
 
-      if (!!this.state.gp && this.state.gp !== '') {
+      if (!!this.state.gp && this.state.gp !== '-') {
 
         const url = encodeURI(backendUrl + '/api/gp/' + this.state.gp)
 
@@ -99,7 +99,7 @@ class App extends Component {
           if (response.ok) {
             return response.json();
           } else {
-            throw new Error('Something went wrong ...');
+            throw new Error('[2] Something went wrong ...');
           }
         })
         .then(data => {
@@ -151,10 +151,6 @@ class App extends Component {
     const { loading, error, gpList, gp, current, updateDate } = this.state;
     const { classes } = this.props;
 
-    if (error) {
-      return <p>{error.message}</p>;
-    }
-
     let Graph = null;
 
     if (!!current) {
@@ -201,14 +197,14 @@ class App extends Component {
                 <Paper className={classes.paper}>
                   <div style={{padding: 10}}>
                     <FormControl className={classes.formControl} style={{width: '100%'}}>
-                      <InputLabel id="gp-select-label">GP</InputLabel>
+                      <InputLabel id="gp-select-label">GP ({gpList.length}) ({ !!error ? error.message : 'Ok'})</InputLabel>
                       <Select
                         labelId="gp-select-label"
                         id="gp-select"
                         value={gp}
                         onChange={onGpChange}
                         className={classes.selectEmpty}>
-                          <MenuItem value={''}>-- None Selected --</MenuItem>
+                          <MenuItem key={'empty'} value={'-'}>-- None Selected --</MenuItem>
                           {gpList.map((item,index) =>
                             <MenuItem key={item} value={item}>{item}</MenuItem>
                           )}
