@@ -15,6 +15,7 @@ import { IconButton, Paper } from '@material-ui/core';
 import {Pie} from 'react-chartjs-2';
 
 //const backendUrl = window.location.protocol + '//' + window.location.hostname;
+
 const backendUrl = 'http://guess-statistics-team5.apps.cluster-54d0.54d0.example.opentlc.com';
 
 const useStyles = makeStyles((theme) => ({
@@ -34,13 +35,11 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 400,
-    width: 400
+    minWidth: 200,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
-    minWidth: 400,
-    width: 400
+    minWidth: 200
   },
 }));
 
@@ -110,14 +109,21 @@ class App extends Component {
           newState.current = data.current;
           newState.updateDate = new Date().toISOString();
           this.setState(newState);
+        })
+        .catch(error => {
+          let newState = Object.assign({}, this.state);
+          newState.loading = false;
+          newState.error = error;
+          this.setState(newState);
         });    
       }
     })
-    .catch(error => this.setState(Object.assign({ 
-      loading: false,
-      error: error,
-      gp: '',
-    }), this.state));
+    .catch(error => {
+      let newState = Object.assign({}, this.state);
+      newState.loading = false;
+      newState.error = error;
+      this.setState(newState);
+    });
   }
 
   setGp(gp) {
@@ -193,8 +199,8 @@ class App extends Component {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Paper className={classes.paper}>
-                  <div style={{padding: 10, width: 400}}>
-                    <FormControl className={classes.formControl}>
+                  <div style={{padding: 10}}>
+                    <FormControl className={classes.formControl} style={{width: '100%'}}>
                       <InputLabel id="gp-select-label">GP</InputLabel>
                       <Select
                         labelId="gp-select-label"
@@ -207,10 +213,12 @@ class App extends Component {
                             <MenuItem key={item} value={item}>{item}</MenuItem>
                           )}
                       </Select>
-                      <Typography gutterBottom variant="overline" style={{width: 530, textAlign: 'right'}}>
-                        {loading ? '(Updating...)' : '(Latest update: ' + updateDate + ')'}
-                      </Typography>                    
                     </FormControl>
+                  </div>
+                  <div style={{padding: 10, width: '95%', textAlign: 'right'}}>
+                    <Typography gutterBottom variant="overline">
+                      {loading ? '(Updating...)' : '(Latest update: ' + updateDate + ')'}
+                    </Typography>                    
                   </div>
                 </Paper>
               </Grid>
